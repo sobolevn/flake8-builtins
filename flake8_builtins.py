@@ -7,6 +7,11 @@ class BuiltinsChecker(object):
     def __init__(self, tree, filename):
         self.tree = tree
         self.filename = filename
+        self.builtins = self.get_builtins()
 
     def run(self):
         pass
+
+
+    def get_builtins(self):
+        return dir(__builtins__)
