@@ -21,15 +21,16 @@ class BuiltinsChecker(object):
 
     def run(self):
         for statement in ast.walk(self.tree):
+            value = None
             if isinstance(statement, ast.Assign):
                 value = self.check_assignment(statement)
-                if value:
-                    yield value
 
-            if isinstance(statement, ast.FunctionDef):
+            elif isinstance(statement, ast.FunctionDef):
                 value = self.check_function_definition(statement)
-                if value:
-                    yield value
+
+            if value:
+                for line, offset, msg, rtype in value:
+                    yield line, offset, msg, rtype
 
     def check_assignment(self, statement):
         for element in statement.targets:
@@ -38,7 +39,7 @@ class BuiltinsChecker(object):
 
                 line = element.lineno
                 offset = element.col_offset
-                return (
+                yield (
                     line,
                     offset,
                     self.assign_msg.format(element.id),
@@ -52,7 +53,7 @@ class BuiltinsChecker(object):
 
                 line = arg.lineno
                 offset = arg.col_offset
-                return (
+                yield (
                     line,
                     offset,
                     self.argument_msg.format(arg.id),

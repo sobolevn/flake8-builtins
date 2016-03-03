@@ -96,6 +96,24 @@ class TestBuiltins(unittest.TestCase):
             0
         )
 
+    def test_report_all_arguments(self):
+        tree = ast.parse('def bla(zip, object=4):\n    b = 4')
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(
+            len(ret),
+            2
+        )
+
+    def test_report_all_variables_within_a_line(self):
+        tree = ast.parse('def bla():\n    object = 4; zip = 3')
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(
+            len(ret),
+            2
+        )
+
 
 if __name__ == '__main__':
     unittest.main()
