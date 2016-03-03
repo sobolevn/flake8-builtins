@@ -10,6 +10,43 @@ Flake8 Builtins plugin
 ======================
 Check for python builtins being used as variables or parameters.
 
+Imagine some code like this::
+
+    def max_values(list, list2):
+        max = list[0]
+        for x in list:
+            if x > 0:
+                max = x
+
+        all_values = list()
+        all_values.append(max)
+
+        max = list2[0]
+        for x in list2:
+            if x > 0:
+                max = x
+        all_values.append(max)
+
+        return all_values
+
+    max_values([3, 4, 5, ], [5, 6, 7])
+
+The last statement is not returning ``[5, 7]`` as one would expect,
+instead is raising this exception::
+
+    Traceback (most recent call last):
+      File "test.py", line 17, in <module>
+        max_values([3,4,5], [4,5,6])
+      File "bla.py", line 6, in max_values
+        all_values = list()
+    TypeError: 'list' object is not callable
+
+**Why?** Because ``max_value`` function's first argument is ``list`` a Python builtin.
+Python allows to override them, but although could be useful in some really specific use cases,
+the general approach is to **not** do that as code then can suddenly break without a clear trace.
+
+Example
+-------
 Given the following code::
 
     def my_method(object, list, dict):
