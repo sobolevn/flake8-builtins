@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
-import __builtin__
 import ast
 import inspect
+import sys
 
 
-BUILTINS = [a[0] for a in inspect.getmembers(__builtin__)]
+if sys.version_info >= (3, 0):
+    import builtins
+    BUILTINS = [a[0] for a in inspect.getmembers(builtins)]
+else:
+    import __builtin__
+    BUILTINS = [a[0] for a in inspect.getmembers(__builtin__)]
 
 
 class BuiltinsChecker(object):
