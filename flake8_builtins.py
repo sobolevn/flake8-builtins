@@ -52,15 +52,29 @@ class BuiltinsChecker(object):
                 )
 
     def check_function_definition(self, statement):
-        for arg in statement.args.args:
-            if isinstance(arg, ast.Name) and \
-                    arg.id in BUILTINS:
+        if sys.version_info >= (3, 0):
+            for arg in statement.args.args:
+                if isinstance(arg, ast.arg) and \
+                        arg.arg in BUILTINS:
 
-                line = arg.lineno
-                offset = arg.col_offset
-                yield (
-                    line,
-                    offset,
-                    self.argument_msg.format(arg.id),
-                    type(self)
-                )
+                    line = arg.lineno
+                    offset = arg.col_offset
+                    yield (
+                        line,
+                        offset,
+                        self.argument_msg.format(arg.arg),
+                        type(self)
+                    )
+        else:
+            for arg in statement.args.args:
+                if isinstance(arg, ast.Name) and \
+                        arg.id in BUILTINS:
+
+                    line = arg.lineno
+                    offset = arg.col_offset
+                    yield (
+                        line,
+                        offset,
+                        self.argument_msg.format(arg.id),
+                        type(self)
+                    )

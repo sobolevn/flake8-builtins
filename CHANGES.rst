@@ -14,3 +14,6 @@ Changelog
 
 - Add actual code.
   [gforcada]
+
+- Drop support for python 3.3, only python 2.7 and python 3.4 are tested.
+  [gforcada]
