@@ -3,7 +3,7 @@
 Changelog
 =========
 
-0.1 (unreleased)
+0.1 (2016-03-04)
 ----------------
 
 - Initial release
