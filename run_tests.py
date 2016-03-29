@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from flake8_builtins import BuiltinsChecker
-from tempfile import mkdtemp
 
 import ast
 import unittest
