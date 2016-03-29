@@ -4,12 +4,27 @@ import inspect
 import sys
 
 
+WHITE_LIST = [
+    '__name__',
+    '__doc__',
+    'credits',
+]
+
+
 if sys.version_info >= (3, 0):
     import builtins
-    BUILTINS = [a[0] for a in inspect.getmembers(builtins)]
+    BUILTINS = [
+        a[0]
+        for a in inspect.getmembers(builtins)
+        if a[0] not in WHITE_LIST
+    ]
 else:
     import __builtin__
-    BUILTINS = [a[0] for a in inspect.getmembers(__builtin__)]
+    BUILTINS = [
+        a[0]
+        for a in inspect.getmembers(__builtin__)
+        if a[0] not in WHITE_LIST
+    ]
 
 
 class BuiltinsChecker(object):

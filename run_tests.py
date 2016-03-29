@@ -114,6 +114,18 @@ class TestBuiltins(unittest.TestCase):
             2
         )
 
+    def test_ignore_whitelisted_names(self):
+        tree = ast.parse(
+            'class MyClass(object):\n'
+            '    __name__ = 4\n'
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(
+            len(ret),
+            0
+        )
+
 
 if __name__ == '__main__':
     unittest.main()
