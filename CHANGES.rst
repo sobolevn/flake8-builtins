@@ -5,13 +5,11 @@ Changelog
 
 0.2 (unreleased)
 ----------------
-
-- Nothing changed yet.
-
+- Whitelist *some* builtins.
+  [gforcada]
 
 0.1 (2016-03-04)
 ----------------
-
 - Initial release
   [gforcada]
 
