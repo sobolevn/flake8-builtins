@@ -3,7 +3,7 @@
 Changelog
 =========
 
-0.3 (unreleased)
+0.3 (2017-05-15)
 ----------------
 
 - Handle stdin, which is the way flake8 gets integrated into editors.
