@@ -41,6 +41,14 @@ setup(
     install_requires=[
         'flake8',
     ],
+    extras_require={
+        'test': [
+            'coverage==3.7.1',
+            'coveralls',
+            'pytest',
+            'pytest-cov',
+        ],
+    },
     entry_points={
         'flake8.extension': ['B00 = flake8_builtins:BuiltinsChecker'],
     },
