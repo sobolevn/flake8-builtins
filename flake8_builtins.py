@@ -34,7 +34,7 @@ else:
 
 class BuiltinsChecker(object):
     name = 'flake8_builtins'
-    version = '0.1'
+    version = '0.3'
     assign_msg = 'B001 "{0}" is a python builtin and is being shadowed, ' \
                  'consider renaming the variable'
     argument_msg = 'B002 "{0}" is used as an argument and thus shadows a ' \
