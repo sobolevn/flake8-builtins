@@ -6,8 +6,8 @@ Changelog
 0.3 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Handle stdin, which is the way flake8 gets integrated into editors.
+  [gforcada]
 
 0.2 (2016-03-30)
 ----------------

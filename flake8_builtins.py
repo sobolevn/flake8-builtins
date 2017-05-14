@@ -3,6 +3,11 @@ import ast
 import inspect
 import sys
 
+try:
+    from flake8.engine import pep8 as stdin_utils
+except ImportError:
+    from flake8 import utils as stdin_utils
+
 
 WHITE_LIST = [
     '__name__',
@@ -40,6 +45,12 @@ class BuiltinsChecker(object):
         self.filename = filename
 
     def run(self):
+        tree = self.tree
+
+        if self.filename == 'stdin':
+            lines = stdin_utils.stdin_get_value().splitlines(True)
+            tree = ast.parse(lines)
+
         for statement in ast.walk(self.tree):
             value = None
             if isinstance(statement, ast.Assign):
