@@ -55,7 +55,7 @@ class BuiltinsChecker(object):
 
         for statement in ast.walk(self.tree):
             for child in ast.iter_child_nodes(statement):
-                child.parent = statement
+                child.__flake8_builtins_parent = statement
 
             value = None
             if isinstance(statement, ast.Assign):
@@ -69,7 +69,7 @@ class BuiltinsChecker(object):
                     yield line, offset, msg, rtype
 
     def check_assignment(self, statement):
-        is_class_def = type(statement.parent) is ast.ClassDef
+        is_class_def = type(statement.__flake8_builtins_parent) is ast.ClassDef
 
         for element in statement.targets:
             if isinstance(element, ast.Name) and \
