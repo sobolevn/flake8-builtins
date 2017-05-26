@@ -48,10 +48,10 @@ class BuiltinsChecker(object):
         tree = self.tree
 
         if self.filename == 'stdin':
-            lines = stdin_utils.stdin_get_value().splitlines(True)
+            lines = stdin_utils.stdin_get_value()
             tree = ast.parse(lines)
 
-        for statement in ast.walk(self.tree):
+        for statement in ast.walk(tree):
             value = None
             if isinstance(statement, ast.Assign):
                 value = self.check_assignment(statement)
