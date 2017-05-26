@@ -3,8 +3,8 @@
 Changelog
 =========
 
-0.3.2 (unreleased)
-------------------
+0.3.1.post0 (2017-05-27)
+------------------------
 
 - Release universal wheels, not only python 2 wheels.
   [gforcada]
