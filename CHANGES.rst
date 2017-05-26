@@ -3,8 +3,8 @@
 Changelog
 =========
 
-0.4 (unreleased)
-----------------
+0.3.1 (2017-05-27)
+------------------
 
 - Fix stdin handling.
   [sangiovanni]
