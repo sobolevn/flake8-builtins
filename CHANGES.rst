@@ -6,8 +6,8 @@ Changelog
 0.4 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Fix stdin handling.
+  [sangiovanni]
 
 0.3 (2017-05-15)
 ----------------
