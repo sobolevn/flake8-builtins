@@ -70,7 +70,9 @@ class BuiltinsChecker(object):
                     yield line, offset, msg, rtype
 
     def check_assignment(self, statement):
-        is_class_def = type(statement.__flake8_builtins_parent) is ast.ClassDef
+        is_class_def = False
+        if type(statement.__flake8_builtins_parent) is ast.ClassDef:
+            is_class_def = True
 
         for element in statement.targets:
             if isinstance(element, ast.Name) and \
@@ -78,7 +80,10 @@ class BuiltinsChecker(object):
 
                 line = element.lineno
                 offset = element.col_offset
-                msg = self.class_attribute_msg if is_class_def else self.assign_msg
+                if is_class_def:
+                    msg = self.class_attribute_msg
+                else:
+                    msg = self.assign_msg
                 yield (
                     line,
                     offset,
