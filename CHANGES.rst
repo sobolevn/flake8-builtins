@@ -9,6 +9,21 @@ Changelog
 - Nothing changed yet.
 
 
+0.3.1.post0 (2017-05-27)
+------------------------
+
+- Release universal wheels, not only python 2 wheels.
+  [gforcada]
+
+- Update trove classifiers.
+  [gforcada]
+
+0.3.1 (2017-05-27)
+------------------
+
+- Fix stdin handling.
+  [sangiovanni]
+
 0.3 (2017-05-15)
 ----------------
 

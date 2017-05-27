@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-import ast
-import unittest
-
 from flake8_builtins import BuiltinsChecker
+from io import BytesIO, StringIO
+
+import ast
+import sys
+import unittest
 
 
 class TestBuiltins(unittest.TestCase):
@@ -117,6 +119,21 @@ class TestBuiltins(unittest.TestCase):
         ret = [c for c in checker.run()]
         self.assertEqual(len(ret), 0)
 
+    def test_stdin(self):
+        code = u'max = 4'
+        stdin_ = sys.stdin
+        if sys.version_info < (3, 0):
+            sys.stdin = BytesIO(code.encode('utf-8'))
+        else:
+            sys.stdin = StringIO(code)
+        tree = ast.parse(code)
+        checker = BuiltinsChecker(tree, 'stdin')
+        ret = [c for c in checker.run()]
+        sys.stdin = stdin_
+        self.assertEqual(
+            len(ret),
+            1
+        )
 
 if __name__ == '__main__':
     unittest.main()
