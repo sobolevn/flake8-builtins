@@ -6,8 +6,8 @@ Changelog
 0.4 (unreleased)
 ----------------
 
-- Nothing changed yet.
-
+- Use a different code for class attributes.
+  [karamanolev]
 
 0.3.1.post0 (2017-05-27)
 ------------------------
