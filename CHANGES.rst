@@ -3,7 +3,7 @@
 Changelog
 =========
 
-0.4 (unreleased)
+0.4 (2017-05-29)
 ----------------
 
 - Use a different code for class attributes.
