@@ -39,6 +39,8 @@ class BuiltinsChecker(object):
                  'consider renaming the variable'
     argument_msg = 'B002 "{0}" is used as an argument and thus shadows a ' \
                    'python builtin, consider renaming the argument'
+    class_attribute_msg = 'B003 "{0}" is a python builtin, consider ' \
+                          'renaming the class attribute'
 
     def __init__(self, tree, filename):
         self.tree = tree
@@ -50,6 +52,10 @@ class BuiltinsChecker(object):
         if self.filename == 'stdin':
             lines = stdin_utils.stdin_get_value()
             tree = ast.parse(lines)
+
+        for statement in ast.walk(tree):
+            for child in ast.iter_child_nodes(statement):
+                child.__flake8_builtins_parent = statement
 
         for statement in ast.walk(tree):
             value = None
@@ -64,16 +70,24 @@ class BuiltinsChecker(object):
                     yield line, offset, msg, rtype
 
     def check_assignment(self, statement):
+        is_class_def = False
+        if type(statement.__flake8_builtins_parent) is ast.ClassDef:
+            is_class_def = True
+
         for element in statement.targets:
             if isinstance(element, ast.Name) and \
                     element.id in BUILTINS:
 
                 line = element.lineno
                 offset = element.col_offset
+                if is_class_def:
+                    msg = self.class_attribute_msg
+                else:
+                    msg = self.assign_msg
                 yield (
                     line,
                     offset,
-                    self.assign_msg.format(element.id),
+                    msg.format(element.id),
                     type(self)
                 )
 
