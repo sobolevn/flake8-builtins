@@ -6,8 +6,11 @@ Changelog
 0.5 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Use requirements.txt to pin dependencies.
+  [gforcada]
 
+- Fix tests with newer flake8 version.
+  [gforcada]
 
 0.4 (2017-05-29)
 ----------------
