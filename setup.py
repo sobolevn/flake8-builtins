@@ -48,6 +48,7 @@ setup(
         'test': [
             'coverage',
             'coveralls',
+            'mock',
             'pytest',
             'pytest-cov',
         ],
