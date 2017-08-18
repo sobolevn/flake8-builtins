@@ -46,7 +46,7 @@ setup(
     ],
     extras_require={
         'test': [
-            'coverage==3.7.1',
+            'coverage',
             'coveralls',
             'pytest',
             'pytest-cov',

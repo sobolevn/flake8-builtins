@@ -10,7 +10,7 @@ matrix:
   - python: 'pypy3'
 cache: pip
 install:
-  - pip install -e .[test]
+  - pip install -r dev-requirements.txt
 script:
   - py.test run_tests.py
 after_success:
