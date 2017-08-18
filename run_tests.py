@@ -16,7 +16,7 @@ class TestBuiltins(unittest.TestCase):
         tree = ast.parse('max = 4')
         checker = BuiltinsChecker(tree, '/home/script.py')
         ret = [c for c in checker.run()]
-        self.assert_codes(ret, ['B001'])
+        self.assert_codes(ret, ['A001'])
 
     def test_nested(self):
         tree = ast.parse(
@@ -25,7 +25,7 @@ class TestBuiltins(unittest.TestCase):
         )
         checker = BuiltinsChecker(tree, '/home/script.py')
         ret = [c for c in checker.run()]
-        self.assert_codes(ret, ['B001'])
+        self.assert_codes(ret, ['A001'])
 
     def test_more_nested(self):
         tree = ast.parse(
@@ -35,7 +35,7 @@ class TestBuiltins(unittest.TestCase):
         )
         checker = BuiltinsChecker(tree, '/home/script.py')
         ret = [c for c in checker.run()]
-        self.assert_codes(ret, ['B001'])
+        self.assert_codes(ret, ['A001'])
 
     def test_line_number(self):
         tree = ast.parse(
@@ -59,25 +59,25 @@ class TestBuiltins(unittest.TestCase):
         tree = ast.parse('def bla():\n    object = 4')
         checker = BuiltinsChecker(tree, '/home/script.py')
         ret = [c for c in checker.run()]
-        self.assert_codes(ret, ['B001'])
+        self.assert_codes(ret, ['A001'])
 
     def test_class_attribute_message(self):
         tree = ast.parse('class TestClass():\n    object = 4')
         checker = BuiltinsChecker(tree, '/home/script.py')
         ret = [c for c in checker.run()]
-        self.assert_codes(ret, ['B003'])
+        self.assert_codes(ret, ['A003'])
 
     def test_argument_message(self):
         tree = ast.parse('def bla(list):\n    a = 4')
         checker = BuiltinsChecker(tree, '/home/script.py')
         ret = [c for c in checker.run()]
-        self.assert_codes(ret, ['B002'])
+        self.assert_codes(ret, ['A002'])
 
     def test_keyword_argument_message(self):
         tree = ast.parse('def bla(dict=3):\n    b = 4')
         checker = BuiltinsChecker(tree, '/home/script.py')
         ret = [c for c in checker.run()]
-        self.assert_codes(ret, ['B002'])
+        self.assert_codes(ret, ['A002'])
 
     def test_no_error(self):
         tree = ast.parse('def bla(first):\n    b = 4')
@@ -101,13 +101,13 @@ class TestBuiltins(unittest.TestCase):
         tree = ast.parse('def bla(zip, object=4):\n    b = 4')
         checker = BuiltinsChecker(tree, '/home/script.py')
         ret = [c for c in checker.run()]
-        self.assert_codes(ret, ['B002', 'B002'])
+        self.assert_codes(ret, ['A002', 'A002'])
 
     def test_report_all_variables_within_a_line(self):
         tree = ast.parse('def bla():\n    object = 4; zip = 3')
         checker = BuiltinsChecker(tree, '/home/script.py')
         ret = [c for c in checker.run()]
-        self.assert_codes(ret, ['B001', 'B001'])
+        self.assert_codes(ret, ['A001', 'A001'])
 
     def test_ignore_whitelisted_names(self):
         tree = ast.parse(

@@ -35,11 +35,11 @@ else:
 class BuiltinsChecker(object):
     name = 'flake8_builtins'
     version = '0.3'
-    assign_msg = 'B001 "{0}" is a python builtin and is being shadowed, ' \
+    assign_msg = 'A001 "{0}" is a python builtin and is being shadowed, ' \
                  'consider renaming the variable'
-    argument_msg = 'B002 "{0}" is used as an argument and thus shadows a ' \
+    argument_msg = 'A002 "{0}" is used as an argument and thus shadows a ' \
                    'python builtin, consider renaming the argument'
-    class_attribute_msg = 'B003 "{0}" is a python builtin, consider ' \
+    class_attribute_msg = 'A003 "{0}" is a python builtin, consider ' \
                           'renaming the class attribute'
 
     def __init__(self, tree, filename):

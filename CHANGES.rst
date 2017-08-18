@@ -3,13 +3,17 @@
 Changelog
 =========
 
-0.5 (unreleased)
+1.0 (unreleased)
 ----------------
 
 - Use requirements.txt to pin dependencies.
   [gforcada]
 
 - Fix tests with newer flake8 version.
+  [gforcada]
+
+- BREAKING CHANGE: error codes have been changed from B00X to A00X to not clash with flake8-bugbear,
+  see https://github.com/gforcada/flake8-builtins/issues/7
   [gforcada]
 
 0.4 (2017-05-29)
