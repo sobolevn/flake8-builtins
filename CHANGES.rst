@@ -3,7 +3,7 @@
 Changelog
 =========
 
-1.0 (unreleased)
+1.0 (2017-08-19)
 ----------------
 
 - Use requirements.txt to pin dependencies.
