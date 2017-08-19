@@ -12,6 +12,7 @@ cache: pip
 install:
   - pip install -r dev-requirements.txt
 script:
+  - flake8 *.py
   - py.test run_tests.py
 after_success:
   - py.test run_tests.py --cov flake8_builtins --cov-report term-missing
