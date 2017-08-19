@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 from flake8_builtins import BuiltinsChecker
-from io import BytesIO, StringIO
 
 import ast
-import sys
+import mock
 import unittest
 
 
@@ -119,17 +118,13 @@ class TestBuiltins(unittest.TestCase):
         ret = [c for c in checker.run()]
         self.assertEqual(len(ret), 0)
 
-    def test_stdin(self):
+    @mock.patch('flake8.utils.stdin_get_value')
+    def test_stdin(self, stdin_get_value):
         code = u'max = 4'
-        stdin_ = sys.stdin
-        if sys.version_info < (3, 0):
-            sys.stdin = BytesIO(code.encode('utf-8'))
-        else:
-            sys.stdin = StringIO(code)
+        stdin_get_value.return_value = code
         tree = ast.parse(code)
         checker = BuiltinsChecker(tree, 'stdin')
         ret = [c for c in checker.run()]
-        sys.stdin = stdin_
         self.assertEqual(
             len(ret),
             1

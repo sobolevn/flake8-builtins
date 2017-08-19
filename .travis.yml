@@ -3,14 +3,14 @@ python:
   - '2.7'
   - '3.5'
   - '3.6'
-  - 'pypy'
-  - 'pypy3'
+  - 'pypy-5.6.0'
+  - 'pypy3.3-5.5-alpha'
 matrix:
   allow_failures:
-  - python: 'pypy3'
+  - python: 'pypy3.3-5.5-alpha'
 cache: pip
 install:
-  - pip install -e .[test]
+  - pip install -r dev-requirements.txt
 script:
   - py.test run_tests.py
 after_success:
