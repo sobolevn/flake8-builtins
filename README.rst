@@ -56,12 +56,12 @@ Given the following code::
 
 The following warnings are shown (via flake8)::
 
-   test.py:1:15: B002 "object" is used as an argument and thus shadows a python builtin, consider renaming the argument
-   test.py:1:23: B002 "list" is used as an argument and thus shadows a python builtin, consider renaming the argument
-   test.py:1:29: B002 "dict" is used as an argument and thus shadows a python builtin, consider renaming the argument
-   test.py:2:5: B001 "max" is a python builtin and is being shadowed, consider renaming the variable
-   test.py:3:5: B001 "min" is a python builtin and is being shadowed, consider renaming the variable
-   test.py:4:5: B001 "zip" is a python builtin and is being shadowed, consider renaming the variable
+   test.py:1:15: A002 "object" is used as an argument and thus shadows a python builtin, consider renaming the argument
+   test.py:1:23: A002 "list" is used as an argument and thus shadows a python builtin, consider renaming the argument
+   test.py:1:29: A002 "dict" is used as an argument and thus shadows a python builtin, consider renaming the argument
+   test.py:2:5: A001 "max" is a python builtin and is being shadowed, consider renaming the variable
+   test.py:3:5: A001 "min" is a python builtin and is being shadowed, consider renaming the variable
+   test.py:4:5: A001 "zip" is a python builtin and is being shadowed, consider renaming the variable
 
 Install
 -------

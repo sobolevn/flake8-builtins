@@ -54,6 +54,6 @@ setup(
         ],
     },
     entry_points={
-        'flake8.extension': ['B00 = flake8_builtins:BuiltinsChecker'],
+        'flake8.extension': ['A00 = flake8_builtins:BuiltinsChecker'],
     },
 )
