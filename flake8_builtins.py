@@ -3,6 +3,7 @@ import ast
 import inspect
 import sys
 
+
 try:
     from flake8.engine import pep8 as stdin_utils
 except ImportError:
@@ -88,7 +89,7 @@ class BuiltinsChecker(object):
                     line,
                     offset,
                     msg.format(element.id),
-                    type(self)
+                    type(self),
                 )
 
     def check_function_definition(self, statement):
@@ -103,7 +104,7 @@ class BuiltinsChecker(object):
                         line,
                         offset,
                         self.argument_msg.format(arg.arg),
-                        type(self)
+                        type(self),
                     )
         else:
             for arg in statement.args.args:
@@ -116,5 +117,5 @@ class BuiltinsChecker(object):
                         line,
                         offset,
                         self.argument_msg.format(arg.id),
-                        type(self)
+                        type(self),
                     )

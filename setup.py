@@ -8,7 +8,7 @@ short_description = \
 
 long_description = '{0}\n{1}'.format(
     open('README.rst').read(),
-    open('CHANGES.rst').read()
+    open('CHANGES.rst').read(),
 )
 
 
