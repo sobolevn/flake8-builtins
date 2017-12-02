@@ -6,8 +6,11 @@ Changelog
 1.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Update README.
+  [DmytroLitvinov]
 
+- Update trove classifiers.
+  [dirn]
 
 1.0 (2017-08-19)
 ----------------
