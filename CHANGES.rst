@@ -3,8 +3,8 @@
 Changelog
 =========
 
-1.1 (unreleased)
-----------------
+1.0.post0 (2017-12-02)
+----------------------
 
 - Update README.
   [DmytroLitvinov]
