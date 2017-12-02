@@ -6,7 +6,8 @@ Changelog
 1.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Update more trove classifiers.
+  [gforcada]
 
 
 1.0.post0 (2017-12-02)
