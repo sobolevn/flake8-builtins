@@ -117,6 +117,21 @@ class TestBuiltins(unittest.TestCase):
         checker = BuiltinsChecker(tree, '/home/script.py')
         ret = [c for c in checker.run()]
         self.assertEqual(len(ret), 0)
+        
+    def test_regression_14(self):
+        tree = ast.parse(
+            'from datetime import datetime'
+            'def validate_date(date):'
+            "    valid_formats = ['%d.%m.%y', '%d.%m.%Y']"
+            '    for format in valid_formats:
+            '        try:
+            '            return datetime.strptime(date, format)
+            '        except ValueError:
+            '            continue'
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
 
     @mock.patch('flake8.utils.stdin_get_value')
     def test_stdin(self, stdin_get_value):
