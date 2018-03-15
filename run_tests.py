@@ -117,17 +117,17 @@ class TestBuiltins(unittest.TestCase):
         checker = BuiltinsChecker(tree, '/home/script.py')
         ret = [c for c in checker.run()]
         self.assertEqual(len(ret), 0)
-        
+
     def test_regression_14(self):
         tree = ast.parse(
-            'from datetime import datetime'
-            'def validate_date(date):'
-            "    valid_formats = ['%d.%m.%y', '%d.%m.%Y']"
-            '    for format in valid_formats:'
-            '        try:'
-            '            return datetime.strptime(date, format)'
-            '        except ValueError:'
-            '            continue'
+            'from datetime import datetime\n'
+            'def validate_date(date):\n'
+            "    valid_formats = ['%d.%m.%y', '%d.%m.%Y']\n"
+            '    for format in valid_formats:\n'
+            '        try:\n'
+            '            return datetime.strptime(date, format)\n'
+            '        except ValueError:\n'
+            '            continue\n'
         )
         checker = BuiltinsChecker(tree, '/home/script.py')
         ret = [c for c in checker.run()]
