@@ -123,10 +123,10 @@ class TestBuiltins(unittest.TestCase):
             'from datetime import datetime'
             'def validate_date(date):'
             "    valid_formats = ['%d.%m.%y', '%d.%m.%Y']"
-            '    for format in valid_formats:
-            '        try:
-            '            return datetime.strptime(date, format)
-            '        except ValueError:
+            '    for format in valid_formats:'
+            '        try:'
+            '            return datetime.strptime(date, format)'
+            '        except ValueError:'
             '            continue'
         )
         checker = BuiltinsChecker(tree, '/home/script.py')
