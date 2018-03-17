@@ -3,8 +3,8 @@
 Changelog
 =========
 
-1.1 (unreleased)
-----------------
+1.1.0 (2018-03-17)
+------------------
 
 - Update more trove classifiers.
   [gforcada]
