@@ -118,16 +118,19 @@ class TestBuiltins(unittest.TestCase):
         ret = [c for c in checker.run()]
         self.assertEqual(len(ret), 0)
 
-    def test_regression_14(self):
+    def test_for_loop_variable(self):
         tree = ast.parse(
-            'from datetime import datetime\n'
-            'def validate_date(date):\n'
-            "    valid_formats = ['%d.%m.%y', '%d.%m.%Y']\n"
-            '    for format in valid_formats:\n'
-            '        try:\n'
-            '            return datetime.strptime(date, format)\n'
-            '        except ValueError:\n'
-            '            continue\n'
+            'for format in (1, 2, 3):\n'
+            '        continue\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    def test_for_loop_multiple_variables(self):
+        tree = ast.parse(
+            'for (index, format) in enumerate([1,2,3,]):\n'
+            '        continue\n',
         )
         checker = BuiltinsChecker(tree, '/home/script.py')
         ret = [c for c in checker.run()]
