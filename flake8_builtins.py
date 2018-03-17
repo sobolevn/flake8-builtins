@@ -66,6 +66,9 @@ class BuiltinsChecker(object):
             elif isinstance(statement, ast.FunctionDef):
                 value = self.check_function_definition(statement)
 
+            elif isinstance(statement, ast.For):
+                value = self.check_for_loop(statement)
+
             if value:
                 for line, offset, msg, rtype in value:
                     yield line, offset, msg, rtype
@@ -119,3 +122,21 @@ class BuiltinsChecker(object):
                         self.argument_msg.format(arg.id),
                         type(self),
                     )
+
+    def check_for_loop(self, statement):
+        if isinstance(statement.target, ast.Tuple):
+            for name in statement.target.elts:
+                if name.id in BUILTINS:
+                    yield (
+                        statement.lineno,
+                        statement.col_offset,
+                        self.argument_msg.format(name.id),
+                        type(self),
+                    )
+        elif statement.target.id in BUILTINS:
+            yield (
+                statement.lineno,
+                statement.col_offset,
+                self.argument_msg.format(statement.target.id),
+                type(self),
+            )
