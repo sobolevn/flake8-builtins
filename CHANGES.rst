@@ -9,6 +9,9 @@ Changelog
 - Update more trove classifiers.
   [gforcada]
 
+- Inspect variables assigned in a for loop as well.
+  Thanks to sobolevn for reporting it!
+  [gforcada]
 
 1.0.post0 (2017-12-02)
 ----------------------
