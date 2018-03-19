@@ -136,6 +136,15 @@ class TestBuiltins(unittest.TestCase):
         ret = [c for c in checker.run()]
         self.assertEqual(len(ret), 1)
 
+    def test_for_loop_nested_tuple(self):
+        tree = ast.parse(
+            'for index, (format, list) in enumerate([(1, "a"), (2, "b")]):\n'
+            '        continue\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 2)
+
     @mock.patch('flake8.utils.stdin_get_value')
     def test_stdin(self, stdin_get_value):
         code = u'max = 4'

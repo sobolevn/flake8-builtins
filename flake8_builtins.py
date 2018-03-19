@@ -124,19 +124,16 @@ class BuiltinsChecker(object):
                     )
 
     def check_for_loop(self, statement):
-        if isinstance(statement.target, ast.Tuple):
-            for name in statement.target.elts:
-                if name.id in BUILTINS:
+        stack = [statement.target]
+        while stack:
+            item = stack.pop()
+            if isinstance(item, ast.Tuple):
+                stack.extend(list(item.elts))
+            else:
+                if item.id in BUILTINS:
                     yield (
                         statement.lineno,
                         statement.col_offset,
-                        self.argument_msg.format(name.id),
+                        self.argument_msg.format(item.id),
                         type(self),
                     )
-        elif statement.target.id in BUILTINS:
-            yield (
-                statement.lineno,
-                statement.col_offset,
-                self.argument_msg.format(statement.target.id),
-                type(self),
-            )
