@@ -6,8 +6,8 @@ Changelog
 1.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Variables assigned in a for loop can be not only a Tuple, but a Tuple inside a Tuple.
+  [dopplershift]
 
 1.1.0 (2018-03-17)
 ------------------
