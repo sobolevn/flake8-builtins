@@ -3,7 +3,7 @@
 Changelog
 =========
 
-1.1.1 (unreleased)
+1.1.1 (2018-03-20)
 ------------------
 
 - Variables assigned in a for loop can be not only a Tuple, but a Tuple inside a Tuple.
