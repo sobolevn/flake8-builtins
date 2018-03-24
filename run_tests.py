@@ -145,6 +145,33 @@ class TestBuiltins(unittest.TestCase):
         ret = [c for c in checker.run()]
         self.assertEqual(len(ret), 2)
 
+    def test_with_statement(self):
+        tree = ast.parse(
+            'with open("bla.txt") as dir:\n'
+            '    continue\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    def test_with_statement_no_error(self):
+        tree = ast.parse(
+            'with open("bla.txt"):\n'
+            '    continue\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 0)
+
+    def test_with_statement_multiple(self):
+        tree = ast.parse(
+            'with open("bla.txt") as dir, open("bla.txt") as int:\n'
+            '    continue\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 2)
+
     @mock.patch('flake8.utils.stdin_get_value')
     def test_stdin(self, stdin_get_value):
         code = u'max = 4'

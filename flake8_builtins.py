@@ -69,6 +69,9 @@ class BuiltinsChecker(object):
             elif isinstance(statement, ast.For):
                 value = self.check_for_loop(statement)
 
+            elif isinstance(statement, ast.With):
+                value = self.check_with(statement)
+
             if value:
                 for line, offset, msg, rtype in value:
                     yield line, offset, msg, rtype
@@ -135,5 +138,26 @@ class BuiltinsChecker(object):
                         statement.lineno,
                         statement.col_offset,
                         self.assign_msg.format(item.id),
+                        type(self),
+                    )
+
+    def check_with(self, statement):
+        if getattr(statement, 'optional_vars', None):
+            var = statement.optional_vars
+            if var.id in BUILTINS:
+                yield (
+                    statement.lineno,
+                    statement.col_offset,
+                    self.assign_msg.format(var.id),
+                    type(self),
+                )
+        if getattr(statement, 'items', None):
+            for item in statement.items:
+                var = item.optional_vars
+                if var and var.id in BUILTINS:
+                    yield (
+                        statement.lineno,
+                        statement.col_offset,
+                        self.assign_msg.format(var.id),
                         type(self),
                     )
