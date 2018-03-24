@@ -75,6 +75,9 @@ class BuiltinsChecker(object):
             elif isinstance(statement, ast.excepthandler):
                 value = self.check_exception(statement)
 
+            elif isinstance(statement, ast.ListComp):
+                value = self.check_list_comprehension(statement)
+
             if value:
                 for line, offset, msg, rtype in value:
                     yield line, offset, msg, rtype
@@ -180,3 +183,23 @@ class BuiltinsChecker(object):
                 self.assign_msg.format(value),
                 type(self),
             )
+
+    def check_list_comprehension(self, statement):
+        for generator in statement.generators:
+            if isinstance(generator.target, ast.Name) \
+                    and generator.target.id in BUILTINS:
+                yield (
+                    statement.lineno,
+                    statement.col_offset,
+                    self.assign_msg.format(generator.target.id),
+                    type(self),
+                )
+            elif isinstance(generator.target, ast.Tuple):
+                for tuple_element in generator.target.elts:
+                    if tuple_element.id in BUILTINS:
+                        yield (
+                            statement.lineno,
+                            statement.col_offset,
+                            self.assign_msg.format(tuple_element.id),
+                            type(self),
+                        )

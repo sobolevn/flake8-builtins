@@ -215,6 +215,22 @@ class TestBuiltins(unittest.TestCase):
         ret = [c for c in checker.run()]
         self.assertEqual(len(ret), 0)
 
+    def test_list_comprehension(self):
+        tree = ast.parse(
+            'a = [int for int in range(3,9)]\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    def test_list_comprehension_multiple(self):
+        tree = ast.parse(
+            'a = [(int, list) for int, list in enumerate(range(3,9))]\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 2)
+
     @mock.patch('flake8.utils.stdin_get_value')
     def test_stdin(self, stdin_get_value):
         code = u'max = 4'
