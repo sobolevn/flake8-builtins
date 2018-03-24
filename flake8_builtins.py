@@ -134,6 +134,6 @@ class BuiltinsChecker(object):
                     yield (
                         statement.lineno,
                         statement.col_offset,
-                        self.argument_msg.format(item.id),
+                        self.assign_msg.format(item.id),
                         type(self),
                     )
