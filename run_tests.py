@@ -3,6 +3,8 @@ from flake8_builtins import BuiltinsChecker
 
 import ast
 import mock
+import pytest
+import sys
 import unittest
 
 
@@ -171,6 +173,47 @@ class TestBuiltins(unittest.TestCase):
         checker = BuiltinsChecker(tree, '/home/script.py')
         ret = [c for c in checker.run()]
         self.assertEqual(len(ret), 2)
+
+    @pytest.mark.skipif(
+        sys.version_info < (3, 0),
+        reason='This syntax is only valid in Python 3.x',
+    )
+    def test_exception_py3(self):
+        tree = ast.parse(
+            'try:\n'
+            '    a = 2\n'
+            'except Exception as int:\n'
+            '    print("ooops")\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    @pytest.mark.skipif(
+        sys.version_info > (3, 0),
+        reason='This syntax is only valid in Python 2.x',
+    )
+    def test_exception_py2(self):
+        tree = ast.parse(
+            'try:\n'
+            '    a = 2\n'
+            'except Exception, int:\n'
+            '    print("ooops")\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    def test_exception_no_error(self):
+        tree = ast.parse(
+            'try:\n'
+            '    a = 2\n'
+            'except Exception:\n'
+            '    print("ooops")\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 0)
 
     @mock.patch('flake8.utils.stdin_get_value')
     def test_stdin(self, stdin_get_value):

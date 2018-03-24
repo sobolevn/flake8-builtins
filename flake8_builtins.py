@@ -72,6 +72,9 @@ class BuiltinsChecker(object):
             elif isinstance(statement, ast.With):
                 value = self.check_with(statement)
 
+            elif isinstance(statement, ast.excepthandler):
+                value = self.check_exception(statement)
+
             if value:
                 for line, offset, msg, rtype in value:
                     yield line, offset, msg, rtype
@@ -161,3 +164,19 @@ class BuiltinsChecker(object):
                         self.assign_msg.format(var.id),
                         type(self),
                     )
+
+    def check_exception(self, statement):
+        exception_name = statement.name
+        value = ''
+        if isinstance(exception_name, ast.Name):
+            value = exception_name.id
+        elif isinstance(exception_name, str):  # Python +3.x
+            value = exception_name
+
+        if value in BUILTINS:
+            yield (
+                statement.lineno,
+                statement.col_offset,
+                self.assign_msg.format(value),
+                type(self),
+            )
