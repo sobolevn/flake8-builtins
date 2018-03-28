@@ -111,6 +111,14 @@ class BuiltinsChecker(object):
                 )
 
     def check_function_definition(self, statement):
+        if statement.name in BUILTINS:
+            yield (
+                statement.lineno,
+                statement.col_offset,
+                self.argument_msg.format(statement.name),
+                type(self),
+            )
+
         if sys.version_info >= (3, 0):
             for arg in statement.args.args:
                 if isinstance(arg, ast.arg) and \

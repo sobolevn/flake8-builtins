@@ -279,6 +279,31 @@ class TestBuiltins(unittest.TestCase):
         ret = [c for c in checker.run()]
         self.assertEqual(len(ret), 0)
 
+    def test_function(self):
+        tree = ast.parse(
+            'def int(): pass\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    def test_method(self):
+        tree = ast.parse(
+            'class bla(object):\n'
+            '    def int(): pass\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    def test_function_nothing(self):
+        tree = ast.parse(
+            'def integer(): pass\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 0)
+
     @mock.patch('flake8.utils.stdin_get_value')
     def test_stdin(self, stdin_get_value):
         code = u'max = 4'
