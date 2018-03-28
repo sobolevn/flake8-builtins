@@ -287,6 +287,18 @@ class TestBuiltins(unittest.TestCase):
         ret = [c for c in checker.run()]
         self.assertEqual(len(ret), 1)
 
+    @pytest.mark.skipif(
+        sys.version_info < (3, 5),
+        reason='This syntax is only valid in Python 3.5',
+    )
+    def test_async_function(self):
+        tree = ast.parse(
+            'async def int(): pass\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
     def test_method(self):
         tree = ast.parse(
             'class bla(object):\n'

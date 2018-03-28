@@ -58,12 +58,17 @@ class BuiltinsChecker(object):
             for child in ast.iter_child_nodes(statement):
                 child.__flake8_builtins_parent = statement
 
+        function_nodes = [ast.FunctionDef]
+        if getattr(ast, 'AsyncFunctionDef', None):
+            function_nodes.append(ast.AsyncFunctionDef)
+        function_nodes = tuple(function_nodes)
+
         for statement in ast.walk(tree):
             value = None
             if isinstance(statement, ast.Assign):
                 value = self.check_assignment(statement)
 
-            elif isinstance(statement, ast.FunctionDef):
+            elif isinstance(statement, function_nodes):
                 value = self.check_function_definition(statement)
 
             elif isinstance(statement, ast.For):
