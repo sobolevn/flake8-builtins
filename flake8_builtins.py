@@ -81,6 +81,9 @@ class BuiltinsChecker(object):
             elif isinstance(statement, (ast.Import, ast.ImportFrom)):
                 value = self.check_import(statement)
 
+            elif isinstance(statement, ast.ClassDef):
+                value = self.check_class(statement)
+
             if value:
                 for line, offset, msg, rtype in value:
                     yield line, offset, msg, rtype
@@ -216,3 +219,12 @@ class BuiltinsChecker(object):
                     self.assign_msg.format(name.asname),
                     type(self),
                 )
+
+    def check_class(self, statement):
+        if statement.name in BUILTINS:
+            yield (
+                statement.lineno,
+                statement.col_offset,
+                self.assign_msg.format(statement.name),
+                type(self),
+            )
