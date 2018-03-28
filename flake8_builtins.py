@@ -78,6 +78,9 @@ class BuiltinsChecker(object):
             elif isinstance(statement, ast.ListComp):
                 value = self.check_list_comprehension(statement)
 
+            elif isinstance(statement, (ast.Import, ast.ImportFrom)):
+                value = self.check_import(statement)
+
             if value:
                 for line, offset, msg, rtype in value:
                     yield line, offset, msg, rtype
@@ -203,3 +206,13 @@ class BuiltinsChecker(object):
                             self.assign_msg.format(tuple_element.id),
                             type(self),
                         )
+
+    def check_import(self, statement):
+        for name in statement.names:
+            if name.asname in BUILTINS:
+                yield (
+                    statement.lineno,
+                    statement.col_offset,
+                    self.assign_msg.format(name.asname),
+                    type(self),
+                )

@@ -231,6 +231,38 @@ class TestBuiltins(unittest.TestCase):
         ret = [c for c in checker.run()]
         self.assertEqual(len(ret), 2)
 
+    def test_import_as(self):
+        tree = ast.parse(
+            'import zope.component.getSite as int\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    def test_import_from_as(self):
+        tree = ast.parse(
+            'from zope.component import getSite as int\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    def test_import_as_nothing(self):
+        tree = ast.parse(
+            'import zope.component.getSite as something_else\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 0)
+
+    def test_import_from_as_nothing(self):
+        tree = ast.parse(
+            'from zope.component import getSite as something_else\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 0)
+
     @mock.patch('flake8.utils.stdin_get_value')
     def test_stdin(self, stdin_get_value):
         code = u'max = 4'
