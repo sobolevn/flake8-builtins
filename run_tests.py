@@ -344,6 +344,34 @@ class TestBuiltins(unittest.TestCase):
         ret = [c for c in checker.run()]
         self.assertEqual(len(ret), 0)
 
+    @pytest.mark.skipif(
+        sys.version_info < (3, 5),
+        reason='This syntax is only valid in Python 3.x',
+    )
+    def test_async_with(self):
+        tree = ast.parse(
+            'async def bla():\n'
+            '    async with open("bla.txt") as int:\n'
+            '        pass\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    @pytest.mark.skipif(
+        sys.version_info < (3, 5),
+        reason='This syntax is only valid in Python 3.x',
+    )
+    def test_async_with_nothing(self):
+        tree = ast.parse(
+            'async def bla():\n'
+            '    async with open("bla.txt") as x:\n'
+            '        pass\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 0)
+
     @mock.patch('flake8.utils.stdin_get_value')
     def test_stdin(self, stdin_get_value):
         code = u'max = 4'
