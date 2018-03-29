@@ -63,6 +63,11 @@ class BuiltinsChecker(object):
             function_nodes.append(ast.AsyncFunctionDef)
         function_nodes = tuple(function_nodes)
 
+        for_nodes = [ast.For]
+        if getattr(ast, 'AsyncFor', None):
+            for_nodes.append(ast.AsyncFor)
+        for_nodes = tuple(for_nodes)
+
         for statement in ast.walk(tree):
             value = None
             if isinstance(statement, ast.Assign):
@@ -71,7 +76,7 @@ class BuiltinsChecker(object):
             elif isinstance(statement, function_nodes):
                 value = self.check_function_definition(statement)
 
-            elif isinstance(statement, ast.For):
+            elif isinstance(statement, for_nodes):
                 value = self.check_for_loop(statement)
 
             elif isinstance(statement, ast.With):
