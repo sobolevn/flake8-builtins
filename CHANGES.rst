@@ -3,8 +3,8 @@
 Changelog
 =========
 
-1.2 (unreleased)
-------------------
+1.2 (2018-04-01)
+----------------
 
 - Fix error message in for loops.
   [gforcada]
