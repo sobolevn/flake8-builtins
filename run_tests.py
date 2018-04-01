@@ -3,6 +3,8 @@ from flake8_builtins import BuiltinsChecker
 
 import ast
 import mock
+import pytest
+import sys
 import unittest
 
 
@@ -144,6 +146,231 @@ class TestBuiltins(unittest.TestCase):
         checker = BuiltinsChecker(tree, '/home/script.py')
         ret = [c for c in checker.run()]
         self.assertEqual(len(ret), 2)
+
+    def test_with_statement(self):
+        tree = ast.parse(
+            'with open("bla.txt") as dir:\n'
+            '    continue\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    def test_with_statement_no_error(self):
+        tree = ast.parse(
+            'with open("bla.txt"):\n'
+            '    continue\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 0)
+
+    def test_with_statement_multiple(self):
+        tree = ast.parse(
+            'with open("bla.txt") as dir, open("bla.txt") as int:\n'
+            '    continue\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 2)
+
+    @pytest.mark.skipif(
+        sys.version_info < (3, 0),
+        reason='This syntax is only valid in Python 3.x',
+    )
+    def test_exception_py3(self):
+        tree = ast.parse(
+            'try:\n'
+            '    a = 2\n'
+            'except Exception as int:\n'
+            '    print("ooops")\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    @pytest.mark.skipif(
+        sys.version_info > (3, 0),
+        reason='This syntax is only valid in Python 2.x',
+    )
+    def test_exception_py2(self):
+        tree = ast.parse(
+            'try:\n'
+            '    a = 2\n'
+            'except Exception, int:\n'
+            '    print("ooops")\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    def test_exception_no_error(self):
+        tree = ast.parse(
+            'try:\n'
+            '    a = 2\n'
+            'except Exception:\n'
+            '    print("ooops")\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 0)
+
+    def test_list_comprehension(self):
+        tree = ast.parse(
+            'a = [int for int in range(3,9)]\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    def test_list_comprehension_multiple(self):
+        tree = ast.parse(
+            'a = [(int, list) for int, list in enumerate(range(3,9))]\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 2)
+
+    def test_import_as(self):
+        tree = ast.parse(
+            'import zope.component.getSite as int\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    def test_import_from_as(self):
+        tree = ast.parse(
+            'from zope.component import getSite as int\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    def test_import_as_nothing(self):
+        tree = ast.parse(
+            'import zope.component.getSite as something_else\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 0)
+
+    def test_import_from_as_nothing(self):
+        tree = ast.parse(
+            'from zope.component import getSite as something_else\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 0)
+
+    def test_class(self):
+        tree = ast.parse(
+            'class int(object): pass\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    def test_class_nothing(self):
+        tree = ast.parse(
+            'class integer(object): pass\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 0)
+
+    def test_function(self):
+        tree = ast.parse(
+            'def int(): pass\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    @pytest.mark.skipif(
+        sys.version_info < (3, 5),
+        reason='This syntax is only valid in Python 3.5',
+    )
+    def test_async_function(self):
+        tree = ast.parse(
+            'async def int(): pass\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    def test_method(self):
+        tree = ast.parse(
+            'class bla(object):\n'
+            '    def int(): pass\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    def test_function_nothing(self):
+        tree = ast.parse(
+            'def integer(): pass\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 0)
+
+    @pytest.mark.skipif(
+        sys.version_info < (3, 5),
+        reason='This syntax is only valid in Python 3.x',
+    )
+    def test_async_for(self):
+        tree = ast.parse(
+            'async def bla():\n'
+            '    async for int in range(4):\n'
+            '        pass\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    @pytest.mark.skipif(
+        sys.version_info < (3, 5),
+        reason='This syntax is only valid in Python 3.x',
+    )
+    def test_async_for_nothing(self):
+        tree = ast.parse(
+            'async def bla():\n'
+            '    async for x in range(4):\n'
+            '        pass\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 0)
+
+    @pytest.mark.skipif(
+        sys.version_info < (3, 5),
+        reason='This syntax is only valid in Python 3.x',
+    )
+    def test_async_with(self):
+        tree = ast.parse(
+            'async def bla():\n'
+            '    async with open("bla.txt") as int:\n'
+            '        pass\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    @pytest.mark.skipif(
+        sys.version_info < (3, 5),
+        reason='This syntax is only valid in Python 3.x',
+    )
+    def test_async_with_nothing(self):
+        tree = ast.parse(
+            'async def bla():\n'
+            '    async with open("bla.txt") as x:\n'
+            '        pass\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 0)
 
     @mock.patch('flake8.utils.stdin_get_value')
     def test_stdin(self, stdin_get_value):

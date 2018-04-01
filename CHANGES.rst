@@ -3,10 +3,25 @@
 Changelog
 =========
 
-1.1.2 (unreleased)
+1.2 (unreleased)
 ------------------
 
 - Fix error message in for loops.
+  [gforcada]
+
+- Inspect the following places for possible builtins being shadowed:
+
+  - with open('/tmp/bla.txt') as int
+  - except ValueError as int
+  - [int for int in range(4)]
+  - from zope.component import provide as int
+  - import zope.component as int
+  - class int(object)
+  - def int()
+  - async def int()
+  - async for int in range(4)
+  - async with open('/tmp/bla.txt') as int
+
   [gforcada]
 
 1.1.1 (2018-03-20)
