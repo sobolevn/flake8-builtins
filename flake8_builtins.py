@@ -130,7 +130,7 @@ class BuiltinsChecker(object):
             yield (
                 statement.lineno,
                 statement.col_offset,
-                self.argument_msg.format(statement.name),
+                self.assign_msg.format(statement.name),
                 type(self),
             )
 

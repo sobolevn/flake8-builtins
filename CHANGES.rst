@@ -6,7 +6,9 @@ Changelog
 1.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix error message in function names shadowing a builtin.
+  Fixes https://github.com/gforcada/flake8-builtins/issues/22
+  [gforcada]
 
 
 1.2.1 (2018-04-01)
