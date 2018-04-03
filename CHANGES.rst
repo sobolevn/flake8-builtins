@@ -3,7 +3,7 @@
 Changelog
 =========
 
-1.2.2 (unreleased)
+1.2.2 (2018-04-03)
 ------------------
 
 - Fix error message in function names shadowing a builtin.
