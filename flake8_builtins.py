@@ -179,7 +179,16 @@ class BuiltinsChecker(object):
     def check_with(self, statement):
         if getattr(statement, 'optional_vars', None):
             var = statement.optional_vars
-            if var.id in BUILTINS:
+            if isinstance(var, ast.Tuple):
+                for element in var.elts:
+                    if element.id in BUILTINS:
+                        yield (
+                            statement.lineno,
+                            statement.col_offset,
+                            self.assign_msg.format(element.id),
+                            type(self),
+                        )
+            elif var.id in BUILTINS:
                 yield (
                     statement.lineno,
                     statement.col_offset,
@@ -189,7 +198,16 @@ class BuiltinsChecker(object):
         if getattr(statement, 'items', None):
             for item in statement.items:
                 var = item.optional_vars
-                if var and var.id in BUILTINS:
+                if isinstance(var, ast.Tuple):
+                    for element in var.elts:
+                        if element.id in BUILTINS:
+                            yield (
+                                statement.lineno,
+                                statement.col_offset,
+                                self.assign_msg.format(element.id),
+                                type(self),
+                            )
+                elif var and var.id in BUILTINS:
                     yield (
                         statement.lineno,
                         statement.col_offset,
