@@ -3,7 +3,7 @@
 Changelog
 =========
 
-1.2.3 (unreleased)
+1.2.3 (2018-04-10)
 ------------------
 
 - Handle cases where an unpacking happens in a with statement.
