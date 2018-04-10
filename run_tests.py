@@ -174,6 +174,15 @@ class TestBuiltins(unittest.TestCase):
         ret = [c for c in checker.run()]
         self.assertEqual(len(ret), 2)
 
+    def test_with_statement_unpack(self):
+        tree = ast.parse(
+            'with open("bla.txt") as (dir, bla):\n'
+            '    continue\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
     @pytest.mark.skipif(
         sys.version_info < (3, 0),
         reason='This syntax is only valid in Python 3.x',

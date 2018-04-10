@@ -6,8 +6,9 @@ Changelog
 1.2.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Handle cases where an unpacking happens in a with statement.
+  Fixes https://github.com/gforcada/flake8-builtins/issues/26
+  [gforcada]
 
 1.2.2 (2018-04-03)
 ------------------
