@@ -3,7 +3,7 @@
 Changelog
 =========
 
-1.2.4 (unreleased)
+1.3.0 (2018-04-13)
 ------------------
 
 - Report different error codes for function (A001) or method definitions (A003).
