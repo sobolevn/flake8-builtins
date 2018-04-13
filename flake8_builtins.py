@@ -127,10 +127,14 @@ class BuiltinsChecker(object):
 
     def check_function_definition(self, statement):
         if statement.name in BUILTINS:
+            msg = self.assign_msg
+            if type(statement.__flake8_builtins_parent) is ast.ClassDef:
+                msg = self.class_attribute_msg
+
             yield (
                 statement.lineno,
                 statement.col_offset,
-                self.assign_msg.format(statement.name),
+                msg.format(statement.name),
                 type(self),
             )
 

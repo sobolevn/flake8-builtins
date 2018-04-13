@@ -6,8 +6,9 @@ Changelog
 1.2.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Report different error codes for function (A001) or method definitions (A003).
+  Fixes https://github.com/gforcada/flake8-builtins/issues/22#issuecomment-378720168
+  [gforcada]
 
 1.2.3 (2018-04-10)
 ------------------
