@@ -10,6 +10,10 @@ Changelog
   Fixes https://github.com/gforcada/flake8-builtins/issues/22#issuecomment-378720168
   [gforcada]
 
+- Ignore underscore variables, django adds it on the list of builtins on its own.
+  Fixes https://github.com/gforcada/flake8-builtins/issues/25
+  [gforcada]
+
 1.2.3 (2018-04-10)
 ------------------
 
