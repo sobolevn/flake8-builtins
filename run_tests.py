@@ -395,8 +395,7 @@ class TestBuiltins(unittest.TestCase):
     def test_stdin(self, stdin_get_value):
         code = u'max = 4'
         stdin_get_value.return_value = code
-        tree = ast.parse(code)
-        checker = BuiltinsChecker(tree, 'stdin')
+        checker = BuiltinsChecker('', 'stdin')
         ret = [c for c in checker.run()]
         self.assertEqual(
             len(ret),
