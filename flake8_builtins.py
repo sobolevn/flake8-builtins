@@ -211,7 +211,7 @@ class BuiltinsChecker(object):
         if not message:
             message = self.assign_msg
         if not variable:
-            column = statement.id
+            variable = statement.id
         if not line:
             line = statement.lineno
         if not column:
