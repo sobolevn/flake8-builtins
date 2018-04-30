@@ -6,8 +6,9 @@ Changelog
 1.3.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Fix TypeError.
+  Fixes https://github.com/gforcada/flake8-builtins/issues/30
+  [gforcada]
 
 1.3.0 (2018-04-13)
 ------------------
