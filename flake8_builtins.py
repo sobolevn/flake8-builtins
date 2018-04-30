@@ -146,9 +146,13 @@ class BuiltinsChecker(object):
             item = stack.pop()
             if isinstance(item, ast.Tuple):
                 stack.extend(list(item.elts))
-            else:
-                if item.id in BUILTINS:
-                    yield self.error(statement, variable=item.id)
+            elif isinstance(item, ast.Name) and \
+                    item.id in BUILTINS:
+                yield self.error(statement, variable=item.id)
+            elif PY3 and \
+                    isinstance(item, ast.Starred) and \
+                    item.value.id in BUILTINS:
+                yield self.error(statement, variable=item.value.id)
 
     def check_with(self, statement):
         if not PY3:

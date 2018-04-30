@@ -147,6 +147,32 @@ class TestBuiltins(unittest.TestCase):
         ret = [c for c in checker.run()]
         self.assertEqual(len(ret), 2)
 
+    @pytest.mark.skipif(
+        sys.version_info < (3, 0),
+        reason='This syntax is only valid in Python 3.x',
+    )
+    def test_for_loop_starred(self):
+        tree = ast.parse(
+            'for index, *int in enumerate([(1, "a"), (2, "b")]):\n'
+            '        continue\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    @pytest.mark.skipif(
+        sys.version_info < (3, 0),
+        reason='This syntax is only valid in Python 3.x',
+    )
+    def test_for_loop_starred_no_error(self):
+        tree = ast.parse(
+            'for index, *other in enumerate([(1, "a"), (2, "b")]):\n'
+            '        continue\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 0)
+
     def test_with_statement(self):
         tree = ast.parse(
             'with open("bla.txt") as dir:\n'
