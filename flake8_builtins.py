@@ -153,10 +153,11 @@ class BuiltinsChecker(object):
             var = statement.optional_vars
             if isinstance(var, ast.Tuple):
                 for element in var.elts:
-                    if element.id in BUILTINS:
+                    if isinstance(element, ast.Name) and \
+                            element.id in BUILTINS:
                         yield self.error(statement, variable=element.id)
 
-            elif var.id in BUILTINS:
+            elif isinstance(var, ast.Name) and var.id in BUILTINS:
                 yield self.error(statement, variable=var.id)
 
         if getattr(statement, 'items', None):
@@ -164,9 +165,11 @@ class BuiltinsChecker(object):
                 var = item.optional_vars
                 if isinstance(var, ast.Tuple):
                     for element in var.elts:
-                        if element.id in BUILTINS:
+                        if isinstance(element, ast.Name) and \
+                                element.id in BUILTINS:
                             yield self.error(statement, variable=element.id)
-                elif var and var.id in BUILTINS:
+
+                elif isinstance(var, ast.Name) and var.id in BUILTINS:
                     yield self.error(statement, variable=var.id)
 
     def check_exception(self, statement):
@@ -188,7 +191,8 @@ class BuiltinsChecker(object):
 
             elif isinstance(generator.target, ast.Tuple):
                 for tuple_element in generator.target.elts:
-                    if tuple_element.id in BUILTINS:
+                    if isinstance(tuple_element, ast.Name) and \
+                            tuple_element.id in BUILTINS:
                         yield self.error(statement, variable=tuple_element.id)
 
     def check_import(self, statement):
