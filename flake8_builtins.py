@@ -123,7 +123,7 @@ class BuiltinsChecker(object):
 
             yield self.error(statement, message=msg, variable=statement.name)
 
-        if sys.version_info >= (3, 0):
+        if PY3:
             for arg in statement.args.args:
                 if isinstance(arg, ast.arg) and \
                         arg.arg in BUILTINS:
@@ -149,7 +149,7 @@ class BuiltinsChecker(object):
                     yield self.error(statement, variable=item.id)
 
     def check_with(self, statement):
-        if getattr(statement, 'optional_vars', None):
+        if not PY3:
             var = statement.optional_vars
             if isinstance(var, ast.Tuple):
                 for element in var.elts:
@@ -159,8 +159,7 @@ class BuiltinsChecker(object):
 
             elif isinstance(var, ast.Name) and var.id in BUILTINS:
                 yield self.error(statement, variable=var.id)
-
-        if getattr(statement, 'items', None):
+        else:
             for item in statement.items:
                 var = item.optional_vars
                 if isinstance(var, ast.Tuple):
