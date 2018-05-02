@@ -6,8 +6,9 @@ Changelog
 1.3.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Make code more robust by not assuming that a node is an ``ast.Name``
+  but actually checking it.
+  [gforcada]
 
 1.3.1 (2018-04-30)
 ------------------
