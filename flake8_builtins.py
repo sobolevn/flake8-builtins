@@ -111,11 +111,22 @@ class BuiltinsChecker(object):
         if type(statement.__flake8_builtins_parent) is ast.ClassDef:
             msg = self.class_attribute_msg
 
-        for element in statement.targets:
-            if isinstance(element, ast.Name) and \
-                    element.id in BUILTINS:
-
-                yield self.error(element, message=msg, variable=element.id)
+        stack = statement.targets
+        while stack:
+            item = stack.pop()
+            if isinstance(item, ast.Tuple):
+                stack.extend(list(item.elts))
+            elif isinstance(item, ast.Name) and \
+                    item.id in BUILTINS:
+                yield self.error(item, message=msg, variable=item.id)
+            elif PY3 and \
+                    isinstance(item, ast.Starred) and \
+                    item.value.id in BUILTINS:
+                yield self.error(
+                    statement,
+                    message=msg,
+                    variable=item.value.id,
+                )
 
     def check_function_definition(self, statement):
         if statement.name in BUILTINS:
@@ -146,9 +157,13 @@ class BuiltinsChecker(object):
             item = stack.pop()
             if isinstance(item, ast.Tuple):
                 stack.extend(list(item.elts))
-            else:
-                if item.id in BUILTINS:
-                    yield self.error(statement, variable=item.id)
+            elif isinstance(item, ast.Name) and \
+                    item.id in BUILTINS:
+                yield self.error(statement, variable=item.id)
+            elif PY3 and \
+                    isinstance(item, ast.Starred) and \
+                    item.value.id in BUILTINS:
+                yield self.error(statement, variable=item.value.id)
 
     def check_with(self, statement):
         if not PY3:
@@ -169,6 +184,12 @@ class BuiltinsChecker(object):
                         if isinstance(element, ast.Name) and \
                                 element.id in BUILTINS:
                             yield self.error(statement, variable=element.id)
+                        elif isinstance(element, ast.Starred) and \
+                                element.value.id in BUILTINS:
+                            yield self.error(
+                                element,
+                                variable=element.value.id,
+                            )
 
                 elif isinstance(var, ast.Name) and var.id in BUILTINS:
                     yield self.error(statement, variable=var.id)
