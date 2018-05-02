@@ -25,6 +25,7 @@ if sys.version_info >= (3, 0):
         for a in inspect.getmembers(builtins)
         if a[0] not in WHITE_LIST
     ]
+    PY3 = True
 else:
     import __builtin__
     BUILTINS = [
@@ -32,6 +33,7 @@ else:
         for a in inspect.getmembers(__builtin__)
         if a[0] not in WHITE_LIST
     ]
+    PY3 = False
 
 
 class BuiltinsChecker(object):
