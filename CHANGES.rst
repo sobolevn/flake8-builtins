@@ -10,6 +10,12 @@ Changelog
   but actually checking it.
   [gforcada]
 
+- Handle ``ast.Starred`` as well (i.e. ``a, *int = range(4)``)
+  [gforcada]
+
+- Handle lists as well, i.e. ``[a, int] = 3, 4``
+  [gforcada]
+
 1.3.1 (2018-04-30)
 ------------------
 
