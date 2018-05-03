@@ -3,7 +3,7 @@
 Changelog
 =========
 
-1.3.2 (unreleased)
+1.4.0 (unreleased)
 ------------------
 
 - Make code more robust by not assuming that a node is an ``ast.Name``
