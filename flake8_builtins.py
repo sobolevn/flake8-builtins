@@ -114,7 +114,7 @@ class BuiltinsChecker(object):
         stack = statement.targets
         while stack:
             item = stack.pop()
-            if isinstance(item, ast.Tuple):
+            if isinstance(item, (ast.Tuple, ast.List)):
                 stack.extend(list(item.elts))
             elif isinstance(item, ast.Name) and \
                     item.id in BUILTINS:
@@ -155,7 +155,7 @@ class BuiltinsChecker(object):
         stack = [statement.target]
         while stack:
             item = stack.pop()
-            if isinstance(item, ast.Tuple):
+            if isinstance(item, (ast.Tuple, ast.List)):
                 stack.extend(list(item.elts))
             elif isinstance(item, ast.Name) and \
                     item.id in BUILTINS:
@@ -168,7 +168,7 @@ class BuiltinsChecker(object):
     def check_with(self, statement):
         if not PY3:
             var = statement.optional_vars
-            if isinstance(var, ast.Tuple):
+            if isinstance(var, (ast.Tuple, ast.List)):
                 for element in var.elts:
                     if isinstance(element, ast.Name) and \
                             element.id in BUILTINS:
@@ -179,7 +179,7 @@ class BuiltinsChecker(object):
         else:
             for item in statement.items:
                 var = item.optional_vars
-                if isinstance(var, ast.Tuple):
+                if isinstance(var, (ast.Tuple, ast.List)):
                     for element in var.elts:
                         if isinstance(element, ast.Name) and \
                                 element.id in BUILTINS:
@@ -211,7 +211,7 @@ class BuiltinsChecker(object):
                     and generator.target.id in BUILTINS:
                 yield self.error(statement, variable=generator.target.id)
 
-            elif isinstance(generator.target, ast.Tuple):
+            elif isinstance(generator.target, (ast.Tuple, ast.List)):
                 for tuple_element in generator.target.elts:
                     if isinstance(tuple_element, ast.Name) and \
                             tuple_element.id in BUILTINS:

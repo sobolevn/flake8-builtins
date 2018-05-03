@@ -73,6 +73,12 @@ class TestBuiltins(unittest.TestCase):
         ret = [c for c in checker.run()]
         self.assert_codes(ret, ['A001'])
 
+    def test_assignment_list(self):
+        tree = ast.parse('[bla, int] = range(4)')
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assert_codes(ret, ['A001'])
+
     def test_class_attribute_message(self):
         tree = ast.parse('class TestClass():\n    object = 4')
         checker = BuiltinsChecker(tree, '/home/script.py')
@@ -142,6 +148,15 @@ class TestBuiltins(unittest.TestCase):
     def test_for_loop_multiple_variables(self):
         tree = ast.parse(
             'for (index, format) in enumerate([1,2,3,]):\n'
+            '        continue\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
+    def test_for_loop_list(self):
+        tree = ast.parse(
+            'for [index, format] in enumerate([1,2,3,]):\n'
             '        continue\n',
         )
         checker = BuiltinsChecker(tree, '/home/script.py')
@@ -219,6 +234,15 @@ class TestBuiltins(unittest.TestCase):
         ret = [c for c in checker.run()]
         self.assertEqual(len(ret), 1)
 
+    def test_with_statement_unpack_on_list(self):
+        tree = ast.parse(
+            'with open("bla.txt") as [dir, bla]:\n'
+            '    continue\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
+
     @pytest.mark.skipif(
         sys.version_info < (3, 0),
         reason='This syntax is only valid in Python 3.x',
@@ -288,6 +312,14 @@ class TestBuiltins(unittest.TestCase):
         checker = BuiltinsChecker(tree, '/home/script.py')
         ret = [c for c in checker.run()]
         self.assertEqual(len(ret), 2)
+
+    def test_list_comprehension_multiple_as_list(self):
+        tree = ast.parse(
+            'a = [(int, a) for [int, a] in enumerate(range(3,9))]\n',
+        )
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 1)
 
     def test_import_as(self):
         tree = ast.parse(
