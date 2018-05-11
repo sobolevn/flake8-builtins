@@ -6,8 +6,8 @@ Changelog
 1.4.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Fix regression in 1.4.0 and interaction with flake8-bugbear.
+  [dirk-thomas]
 
 1.4.0 (2018-05-03)
 ------------------
