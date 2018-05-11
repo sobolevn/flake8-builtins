@@ -3,7 +3,7 @@
 Changelog
 =========
 
-1.4.1 (unreleased)
+1.4.1 (2018-05-11)
 ------------------
 
 - Fix regression in 1.4.0 and interaction with flake8-bugbear.
