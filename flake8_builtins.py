@@ -111,7 +111,7 @@ class BuiltinsChecker(object):
         if type(statement.__flake8_builtins_parent) is ast.ClassDef:
             msg = self.class_attribute_msg
 
-        stack = statement.targets
+        stack = list(statement.targets)
         while stack:
             item = stack.pop()
             if isinstance(item, (ast.Tuple, ast.List)):
