@@ -2,7 +2,7 @@
 import ast
 import inspect
 import sys
-
+from typing import Optional, List
 
 try:
     from flake8.engine import pep8 as stdin_utils
@@ -249,3 +249,50 @@ class BuiltinsChecker(object):
             message.format(variable),
             type(self),
         )
+
+
+def get_variables_from_node(node: ast.AST) -> List[str]:
+    """
+    Gets the assigned names from the list of nodes.
+    Can be used with any nodes that operate with ``ast.Name`` or ``ast.Tuple``
+    as targets for the assignment.
+    Can be used with nodes like ``ast.Assign``, ``ast.Tuple``, ``ast.For``,
+    ``ast.With``, etc.
+
+    Function originally found in:
+    https://github.com/wemake-services/wemake-python-styleguide
+    """
+    names: List[str] = []
+    naive_attempt = extract_name(node)
+
+    if naive_attempt:
+        names.append(naive_attempt)
+    elif isinstance(node, ast.Tuple):
+        for subnode in node.elts:
+            extracted_name = extract_name(subnode)
+            if extracted_name:
+                names.append(extracted_name)
+    return names
+
+
+def extract_name(node: ast.AST) -> Optional[str]:
+    """
+    Utility to extract names for several types of nodes.
+    Is used to get name from node in case it is ``ast.Name``.
+    Should not be used direclty with assigns,
+    use safer :py:`~get_assign_names` function.
+    Example:
+    >>> import ast
+    >>> tree = ast.parse('a')
+    >>> node = tree.body[0].value
+    >>> extract_name(node)
+    'a'
+
+    Function originally found in:
+    https://github.com/wemake-services/wemake-python-styleguide
+    """
+    if isinstance(node, ast.Starred):
+        node = node.value
+    if isinstance(node, ast.Name):
+        return node.id
+    return None

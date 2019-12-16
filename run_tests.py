@@ -482,3 +482,10 @@ class TestBuiltins(unittest.TestCase):
             len(ret),
             1,
         )
+
+    def test_tuple_unpacking(self):
+        tree = ast.parse('a, *(b, c) = 1, 2, 3')
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 0)
+
