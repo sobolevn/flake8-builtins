@@ -494,7 +494,7 @@ class TestBuiltins(unittest.TestCase):
 
 
 @pytest.mark.skipif(
-    sys.version_info >= (3, 6),
+    sys.version_info < (3, 6),
     reason='Hypothesmith requires Python 3.6',
 )
 @given(source_code=hypothesmith.from_grammar())
