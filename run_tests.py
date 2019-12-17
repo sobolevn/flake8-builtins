@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import hypothesmith
+from hypothesis import given, reject, settings, example
+
 from flake8_builtins import BuiltinsChecker
 
 import ast
@@ -489,3 +492,15 @@ class TestBuiltins(unittest.TestCase):
         ret = [c for c in checker.run()]
         self.assertEqual(len(ret), 0)
 
+
+@given(source_code=hypothesmith.from_grammar())
+@settings(max_examples=10000)
+def test_builtin_works_on_many_examples(source_code):
+    try:
+        source = source_code.encode("utf-8-sig")
+    except UnicodeEncodeError:
+        reject()
+    tree = ast.parse(source)
+    checker = BuiltinsChecker(tree, '/home/script.py')
+    ret = [c for c in checker.run()]
+    print(source_code)
