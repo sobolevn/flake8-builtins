@@ -2,7 +2,6 @@
 import ast
 import inspect
 import sys
-from typing import Optional, List
 
 try:
     from flake8.engine import pep8 as stdin_utils
