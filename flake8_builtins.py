@@ -3,6 +3,7 @@ import ast
 import inspect
 import sys
 
+
 try:
     from flake8.engine import pep8 as stdin_utils
 except ImportError:
