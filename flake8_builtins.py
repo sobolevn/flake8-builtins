@@ -125,7 +125,7 @@ class BuiltinsChecker(object):
                         message=msg,
                         variable=item.value.id,
                     )
-                else:
+                elif hasattr(item.value, 'elts'):
                     stack.extend(list(item.value.elts))
 
     def check_function_definition(self, statement):
@@ -166,7 +166,7 @@ class BuiltinsChecker(object):
                         statement,
                         variable=item.value.id,
                     )
-                else:
+                elif hasattr(item.value, 'elts'):
                     stack.extend(list(item.value.elts))
 
     def check_with(self, statement):
