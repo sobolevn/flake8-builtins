@@ -493,6 +493,10 @@ class TestBuiltins(unittest.TestCase):
         self.assertEqual(len(ret), 0)
 
 
+@pytest.mark.skipif(
+    sys.version_info >= (3, 6),
+    reason='Hypothesmith requires Python 3.6',
+)
 @given(source_code=hypothesmith.from_grammar())
 def test_builtin_works_on_many_examples(source_code):
     try:
