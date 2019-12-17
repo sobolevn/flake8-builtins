@@ -4,11 +4,14 @@ from hypothesis import given
 from hypothesis import reject
 
 import ast
-import hypothesmith
 import mock
 import pytest
 import sys
 import unittest
+
+
+if sys.version_info >= (3, 6):
+    import hypothesmith
 
 
 class TestBuiltins(unittest.TestCase):
