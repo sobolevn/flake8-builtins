@@ -6,8 +6,8 @@ Changelog
 1.4.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Fix tuple parsing.
+  [memery-imb]
 
 1.4.1 (2018-05-11)
 ------------------
