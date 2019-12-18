@@ -489,6 +489,10 @@ class TestBuiltins(unittest.TestCase):
             1,
         )
 
+    @pytest.mark.skipif(
+        sys.version_info < (3, 5),
+        reason='This syntax is only valid in Python 3.x',
+    )
     def test_tuple_unpacking(self):
         tree = ast.parse('a, *(b, c) = 1, 2, 3')
         checker = BuiltinsChecker(tree, '/home/script.py')
