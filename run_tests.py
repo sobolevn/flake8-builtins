@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
 from flake8_builtins import BuiltinsChecker
+from hypothesis import given
+from hypothesis import reject
 
 import ast
 import mock
 import pytest
 import sys
 import unittest
+
+
+if sys.version_info >= (3, 6):
+    import hypothesmith
 
 
 class TestBuiltins(unittest.TestCase):
@@ -482,3 +488,26 @@ class TestBuiltins(unittest.TestCase):
             len(ret),
             1,
         )
+
+    @pytest.mark.skipif(
+        sys.version_info < (3, 5),
+        reason='This syntax is only valid in Python 3.x',
+    )
+    def test_tuple_unpacking(self):
+        tree = ast.parse('a, *(b, c) = 1, 2, 3')
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assertEqual(len(ret), 0)
+
+
+if sys.version_info >= (3, 6):
+    @given(source_code=hypothesmith.from_grammar())
+    def test_builtin_works_on_many_examples(source_code):
+        try:
+            source = source_code.encode('utf-8-sig')
+        except UnicodeEncodeError:
+            reject()
+            raise
+        tree = ast.parse(source)
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        assert isinstance([c for c in checker.run()], list)

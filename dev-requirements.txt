@@ -1,7 +1,7 @@
 -r requirements.txt
 -e .[test]
 asn1crypto==0.24.0
-attrs==17.4.0
+attrs==19.2.0
 certifi==2018.1.18
 cffi==1.11.5
 chardet==3.0.4
@@ -23,16 +23,19 @@ flake8-string-format==0.2.3
 flake8-todo==0.7
 funcsigs==1.0.2
 futures==3.2.0; python_version < '3.0'
+hypothesis==4.55.1
+hypothesmith==0.0.5; python_version >= '3.6'
 idna==2.6
 ipaddress==1.0.19
 isort==4.3.4
 mock==2.0.0
 pbr==3.1.1
-pluggy==0.6.0
+pluggy==0.12.0
 py==1.5.2
 pycparser==2.18
 pyOpenSSL==17.5.0
-pytest==3.4.2
+pytest==4.6.7; python_version < '3.0'
+pytest==5.2.0; python_version >= '3.0'
 pytest-cov==2.5.1
 requests==2.20.0
 six==1.11.0
