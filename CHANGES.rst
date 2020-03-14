@@ -3,7 +3,7 @@
 Changelog
 =========
 
-1.5.0 (unreleased)
+1.5.0 (2020-03-14)
 ------------------
 
 - Add ``python3.8`` support.
