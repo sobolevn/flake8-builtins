@@ -35,6 +35,16 @@ else:
     ]
     PY3 = False
 
+if sys.version_info >= (3, 6):
+    AnnAssign = ast.AnnAssign
+else:  # There was no `AnnAssign` before python3.6
+    AnnAssign = type('AnnAssign', (ast.AST, ), {})
+
+if sys.version_info >= (3, 8):
+    NamedExpr = ast.NamedExpr
+else:  # There was no walrus operator before python3.8
+    NamedExpr = type('NamedExpr', (ast.AST, ), {})
+
 
 class BuiltinsChecker(object):
     name = 'flake8_builtins'
@@ -76,9 +86,9 @@ class BuiltinsChecker(object):
             with_nodes.append(ast.AsyncWith)
         with_nodes = tuple(with_nodes)
 
+        value = None
         for statement in ast.walk(tree):
-            value = None
-            if isinstance(statement, ast.Assign):
+            if isinstance(statement, (ast.Assign, AnnAssign, NamedExpr)):
                 value = self.check_assignment(statement)
 
             elif isinstance(statement, function_nodes):
@@ -111,7 +121,11 @@ class BuiltinsChecker(object):
         if type(statement.__flake8_builtins_parent) is ast.ClassDef:
             msg = self.class_attribute_msg
 
-        stack = list(statement.targets)
+        if isinstance(statement, ast.Assign):
+            stack = list(statement.targets)
+        else:  # This is `ast.AnnAssign` or `ast.NamedExpr`:
+            stack = [statement.target]
+
         while stack:
             item = stack.pop()
             if isinstance(item, (ast.Tuple, ast.List)):

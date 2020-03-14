@@ -26,6 +26,26 @@ class TestBuiltins(unittest.TestCase):
         ret = [c for c in checker.run()]
         self.assert_codes(ret, ['A001'])
 
+    @pytest.mark.skipif(
+        sys.version_info < (3, 6),
+        reason='AnnAssign appeared in 3.6',
+    )
+    def test_ann_assign(self):
+        tree = ast.parse('list: int = 1')
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assert_codes(ret, ['A001'])
+
+    @pytest.mark.skipif(
+        sys.version_info < (3, 8),
+        reason='NamedExpr appeared in 3.8',
+    )
+    def test_walrus_operator(self):
+        tree = ast.parse('(dict := 1)')
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assert_codes(ret, ['A001'])
+
     def test_nested(self):
         tree = ast.parse(
             'def bla():\n'

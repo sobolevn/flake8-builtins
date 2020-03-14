@@ -3,10 +3,17 @@
 Changelog
 =========
 
-1.4.3 (unreleased)
+1.5.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add ``python3.8`` support.
+  [sobolevn]
+
+- Add ``AnnAssign`` support.
+  [soboelvn]
+
+- Add ``NamedExpr`` or ``:=`` support.
+  [sobolevn]
 
 
 1.4.2 (2019-12-18)
