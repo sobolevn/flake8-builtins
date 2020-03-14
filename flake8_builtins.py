@@ -152,7 +152,12 @@ class BuiltinsChecker(object):
             yield self.error(statement, message=msg, variable=statement.name)
 
         if PY3:
-            for arg in statement.args.args:
+            all_arguments = (
+                *statement.args.args,
+                *getattr(statement.args, 'kwonlyargs', []),
+                *getattr(statement.args, 'posonlyargs', []),
+            )
+            for arg in all_arguments:
                 if isinstance(arg, ast.arg) and \
                         arg.arg in BUILTINS:
                     yield self.error(
