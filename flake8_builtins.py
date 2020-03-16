@@ -237,7 +237,6 @@ class BuiltinsChecker(object):
             yield self.error(statement, variable=value)
 
     def check_comprehension(self, statement):
-        print(statement)
         for generator in statement.generators:
             if isinstance(generator.target, ast.Name) \
                     and generator.target.id in BUILTINS:
