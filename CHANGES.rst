@@ -3,7 +3,7 @@
 Changelog
 =========
 
-1.5.1 (unreleased)
+1.5.1 (2020-03-16)
 ------------------
 
 - Adds kwonly and posonly args support.
