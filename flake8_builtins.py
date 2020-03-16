@@ -90,7 +90,7 @@ class BuiltinsChecker(object):
             ast.ListComp,
             ast.SetComp,
             ast.DictComp,
-            st.GeneratorExp,
+            ast.GeneratorExp,
         )
 
         value = None
