@@ -123,6 +123,26 @@ class TestBuiltins(unittest.TestCase):
         ret = [c for c in checker.run()]
         self.assert_codes(ret, ['A002'])
 
+    @pytest.mark.skipif(
+        sys.version_info < (3, 6),
+        reason='This syntax is only valid in Python 3.6+',
+    )
+    def test_kwonly_argument_message(self):
+        tree = ast.parse('def bla(*, list):\n    a = 4')
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assert_codes(ret, ['A002'])
+
+    @pytest.mark.skipif(
+        sys.version_info < (3, 8),
+        reason='This syntax is only valid in Python 3.8+',
+    )
+    def test_posonly_argument_message(self):
+        tree = ast.parse('def bla(list, /):\n    a = 4')
+        checker = BuiltinsChecker(tree, '/home/script.py')
+        ret = [c for c in checker.run()]
+        self.assert_codes(ret, ['A002'])
+
     def test_no_error(self):
         tree = ast.parse('def bla(first):\n    b = 4')
         checker = BuiltinsChecker(tree, '/home/script.py')
