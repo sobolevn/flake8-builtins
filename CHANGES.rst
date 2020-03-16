@@ -6,8 +6,8 @@ Changelog
 1.5.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Adds kwonly and posonly args support.
+  [sobolevn]
 
 1.5.0 (2020-03-14)
 ------------------
